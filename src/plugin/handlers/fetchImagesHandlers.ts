@@ -1,5 +1,4 @@
 // fetchImagesHandlers.ts
-
 import { NodeData, NodeType } from '@/types/node';
 
 const exportSize = (type: 'SCALE' | 'HEIGHT', value: number): ExportSettings => ({
@@ -15,8 +14,8 @@ export async function getImageNode(node: SceneNode): Promise<NodeData | null> {
     const fills = node.fills as ReadonlyArray<Paint>;
     const imageFill = fills.find((fill) => fill.type === 'IMAGE');
     if (imageFill) {
-      const imageUrl = await node.exportAsync(exportSize('HEIGHT', 150));
-      return { id: node.id, name: node.name, type: 'IMAGE' as NodeType, imageData: imageUrl };
+      const imageUrl = await node.exportAsync(exportSize('HEIGHT', 350));
+      return { id: node.id, name: node.name, type: 'IMAGE' as NodeType, imageData: new Uint8Array(imageUrl) };
     }
   }
   if ('children' in node) {
