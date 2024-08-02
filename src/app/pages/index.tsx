@@ -29,6 +29,7 @@ function Page() {
 
   const handleRemoveBackground = async () => {
     try {
+      parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to remove background' } }, '*');
       setLoading(true);
       if (rawImageData && selectedNodeId) {
         const resultBlob = await removeImageBackground(rawImageData);
@@ -38,10 +39,12 @@ function Page() {
           window.parent.postMessage({ pluginMessage: { type: 'REPLACE_IMAGE', data: await resultBlob.arrayBuffer(), nodeId: selectedNodeId } }, '*');
         } else {
           console.error('Failed to remove background');
+          window.parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to remove background' } }, '*');
         }
       }
     } catch (error) {
       console.error('Failed to remove background', error);
+      window.parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to remove background' } }, '*');
     } finally {
       setLoading(false);
     }

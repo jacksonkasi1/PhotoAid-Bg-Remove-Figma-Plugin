@@ -1,10 +1,6 @@
-// ** import helpers
 import { getImageNode } from './handlers/fetchImagesHandlers';
 import { fetchRawImage } from './handlers/fetchRawImageHandler';
 
-/**
- * Initialize the Figma plugin, setting the initial dimensions and fetching the selected image node.
- */
 const initializePlugin = async () => {
   const storedWidth = await figma.clientStorage.getAsync('pluginWidth');
   const storedHeight = await figma.clientStorage.getAsync('pluginHeight');
@@ -30,6 +26,7 @@ initializePlugin();
  * Handles messages from the plugin UI.
  * Resizes the plugin UI and saves the new dimensions in client storage.
  * Replaces the image in Figma with the background removed image.
+ * Shows error messages using figma.notify.
  * @param {any} msg - The message from the plugin UI.
  */
 figma.ui.onmessage = async (msg) => {
@@ -60,8 +57,11 @@ figma.ui.onmessage = async (msg) => {
       //   }
       // }
     }
+  } else if (msg.type === 'SHOW_ERROR') {
+    figma.notify(msg.message);
   }
 };
+
 
 /**
  * Handles selection changes in the Figma document.
