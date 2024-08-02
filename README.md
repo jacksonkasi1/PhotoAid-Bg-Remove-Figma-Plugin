@@ -1,24 +1,22 @@
-# Imgly Bg Remove
+# PhotoAid BG Remove
 
-Imgly Bg Remove is a versatile plugin designed to enhance your image export experience. It provides various export options, filter settings, scaling features, and convenient renaming capabilities, making it an invaluable tool for developers and designers.
+PhotoAid BG Remove is a versatile plugin designed to enhance your image export experience. It provides powerful features such as background removal, shadow removal, and AI image enlargement, making it an invaluable tool for developers and designers.
 
 ## Features
 
-1. **Export Options**: Access export options conveniently located at the top left side of the interface.
-2. **Filter Options**: Utilize filter options found at the bottom left side, allowing you to filter by vector, image, etc.
-3. **Scale Options**: Easily scale your images using the options available at the top of the interface.
-4. **Rename Images**: Quickly rename your images with ease.
-5. **File Name Case Option**: Use the file name case option dropdown to rename all images to a selected format, making it more efficient for developers.
+1. **Photo Background Remover**: Effortlessly remove backgrounds from your images.
+2. **Photo Shadow Remover**: Eliminate shadows to create cleaner images.
+3. **AI Image Enlarger**: Enhance your images using AI to increase their size without losing quality.
 
 ## Installation
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/imagepro-export.git
+    git clone https://github.com/jacksonkasi1/PhotoAid-Bg-Remove-Figma-Plugin.git
     ```
 2. Navigate to the project directory:
     ```bash
-    cd plugin
+    cd PhotoAid-Bg-Remove-Figma-Plugin/plugin
     ```
 3. Install the dependencies:
     ```bash
@@ -32,10 +30,9 @@ Imgly Bg Remove is a versatile plugin designed to enhance your image export expe
 ## Usage
 
 1. Open the plugin interface.
-2. Use the export options on the top left to export your images.
-3. Apply filters using the options on the bottom left.
-4. Scale your images as needed with the top scaling options.
-5. Rename images individually or use the file name case option dropdown to apply a format to all images.
+2. Use the background remover to remove unwanted backgrounds from your images.
+3. Apply the shadow remover to eliminate shadows.
+4. Use the AI image enlarger to enhance and scale your images.
 
 ## Contributing
 
@@ -50,3 +47,10 @@ If you like my work and would like to support my dream of buying a Mac laptop, p
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Note
+
+- This is not an official PhotoAid Figma plugin.
+- Imgly does not support this. If anyone wants to see the web demo of Imgly BG Remove, check this:
+  - [GitHub Repository](https://github.com/jacksonkasi1/imgly-bg-remove-poc)
+  - [Web Demo](https://imgly-bg-remove.vercel.app/)
