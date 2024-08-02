@@ -9,12 +9,11 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { arrayBufferToBase64 } from '@/utils/file-utils';
 import { removeImageBackground } from '@/utils/background-removal';
 
-
-
 function Page() {
   const [imageData, setImageData] = useState(null);
   const [rawImageData, setRawImageData] = useState(null);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     window.onmessage = async (event) => {
@@ -30,11 +29,9 @@ function Page() {
 
   const handleRemoveBackground = async () => {
     try {
-
+      setLoading(true);
       if (rawImageData && selectedNodeId) {
         const resultBlob = await removeImageBackground(rawImageData);
-        console.log({resultBlob});
-        
         if (resultBlob) {
           const base64String = await arrayBufferToBase64(new Uint8Array(await resultBlob.arrayBuffer()));
           setImageData(base64String);
@@ -45,6 +42,8 @@ function Page() {
       }
     } catch (error) {
       console.error('Failed to remove background', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,7 +59,9 @@ function Page() {
     <ThemeProvider defaultTheme="system">
       <div className="flex flex-col h-screen gap-1 p-2 mx-auto">
         <RenderImage imageData={imageData} />
-        <Button onClick={handleRemoveBackground}>Replace Background</Button>
+        <Button onClick={handleRemoveBackground} disabled={loading}>
+          {loading ? 'Processing...' : 'Replace Background'}
+        </Button>
       </div>
     </ThemeProvider>
   );

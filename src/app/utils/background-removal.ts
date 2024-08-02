@@ -1,13 +1,13 @@
 import { Config, removeBackground } from "@imgly/background-removal";
 
 let config: Config = {
-  // publicPath: "http://localhost:8080/assets",
   fetchArgs: {
     mode: "cors",
   },
-  debug: true,
+  model:'isnet_fp16',
+  device:'gpu',
   output: {
-    quality: 0.8,
+    quality: 1,
   },
 };
 
