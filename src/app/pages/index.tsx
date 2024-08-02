@@ -7,13 +7,13 @@ import { ThemeProvider } from '@/components/theme-provider';
 
 // ** import utils
 import { arrayBufferToBase64 } from '@/utils/file-utils';
-import { removeImageBackground } from '@/utils/background-removal';
+import { uploadImageForBackgroundRemoval, getBackgroundRemovalResult } from '@/utils/background-removal';
 
 function Page() {
-  const [imageData, setImageData] = useState(null);
-  const [rawImageData, setRawImageData] = useState(null);
-  const [selectedNodeId, setSelectedNodeId] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [imageData, setImageData] = useState<string | null>(null);
+  const [rawImageData, setRawImageData] = useState<ArrayBuffer | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     window.onmessage = async (event) => {
@@ -29,17 +29,24 @@ function Page() {
 
   const handleRemoveBackground = async () => {
     try {
-      parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to remove background' } }, '*');
       setLoading(true);
       if (rawImageData && selectedNodeId) {
-        const resultBlob = await removeImageBackground(rawImageData);
-        if (resultBlob) {
-          const base64String = await arrayBufferToBase64(new Uint8Array(await resultBlob.arrayBuffer()));
-          setImageData(base64String);
-          window.parent.postMessage({ pluginMessage: { type: 'REPLACE_IMAGE', data: await resultBlob.arrayBuffer(), nodeId: selectedNodeId } }, '*');
+        const base64String = await arrayBufferToBase64(new Uint8Array(rawImageData));
+        const requestId = await uploadImageForBackgroundRemoval(base64String);
+
+        if (requestId) {
+          const resultBase64 = await getBackgroundRemovalResult(requestId);
+          if (resultBase64) {
+            setImageData(`data:image/png;base64,${resultBase64}`);
+            const resultBlob = await fetch(`data:image/png;base64,${resultBase64}`).then(res => res.blob());
+            window.parent.postMessage({ pluginMessage: { type: 'REPLACE_IMAGE', data: await resultBlob.arrayBuffer(), nodeId: selectedNodeId } }, '*');
+          } else {
+            console.error('Failed to retrieve background removal result');
+            window.parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to retrieve background removal result' } }, '*');
+          }
         } else {
-          console.error('Failed to remove background');
-          window.parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to remove background' } }, '*');
+          console.error('Failed to upload image for background removal');
+          window.parent.postMessage({ pluginMessage: { type: 'SHOW_ERROR', message: 'Failed to upload image for background removal' } }, '*');
         }
       }
     } catch (error) {
